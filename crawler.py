@@ -7,7 +7,6 @@ class Crawler(object):
     def __init__(self, base_url='https://www.csie.ntu.edu.tw/news/', rel_url='news.php?class=101'):
         self.base_url = base_url
         self.rel_url = rel_url
-        self.pinned_post = ''
 
     def crawl(self, start_date, end_date):
         contents = []
@@ -39,20 +38,20 @@ class Crawler(object):
                 if date < start_date:
                     break
 
-            content = date.strftime('%Y-%m-%d') + ',' + \
-                self.crawl_title(post.xpath("./td[2]/a")[0].text) + ',' + \
+            content = [
+                date.strftime('%Y-%m-%d'),
+                self.crawl_title(post.xpath("./td[2]/a")[0].text),
                 self.crawl_content(post.xpath("./td[2]/a")[0].get('href'))
+            ]
 
-            if pinned:
-                self.pinned_post = content
-            else:
+            if not pinned or (start_date <= date and date <= end_date):
                 contents.append(content)
         return contents, date
     
     def crawl_title(self, text):
-        title = ""
+        title = ''
         for segment in text.split('"'):
-            title += '"' + segment
+            title += '""' + segment
         return '"' + title[1:] + '"'
 
     def crawl_content(self, rel_url):
@@ -61,20 +60,20 @@ class Crawler(object):
         return '"' + self.crawl_text(root.xpath("/html/body/div[1]/div/div[2]/div/div/div[2]/div/div[2]")[0]) + '"'
     
     def crawl_text(self, current):
-        print('-----------------------------------------------------------------------')
-        print('@', end='')
-        print(current, end = '@\n')
-        text = ""
-        if type(current) == etree._ElementUnicodeResult:
-            if current == '':
-                return ''
+        print(current)
+        text = ''
+        if etree._ElementUnicodeResult == type(current):
+            if '\r\n' == current[0:2]:
+                current = current[2:]
+            print(current)
             for segment in current.split('"'):
-                text += '"' + segment
-            print('#########################################################################')
-            return ""
-
-        print(current.xpath('./node()'))
-        for node in current.xpath('./node()'):
-            text += self.crawl_text(node)
-        print('#########################################################################')
-        return ""
+                text += '""' + segment
+            text = text[2:]
+        else:
+            if 'p' == current.tag or 'br' == current.tag or 'tr' == current.tag:
+                text += '\n'
+            print("p" == current.tag)
+            print(current.xpath('./node()'))
+            for node in current.xpath('./node()'):
+                text += self.crawl_text(node)
+        return text
