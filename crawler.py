@@ -60,20 +60,19 @@ class Crawler(object):
         return '"' + self.crawl_text(root.xpath("/html/body/div[1]/div/div[2]/div/div/div[2]/div/div[2]")[0]) + '"'
     
     def crawl_text(self, current):
-        print(current)
         text = ''
         if etree._ElementUnicodeResult == type(current):
             if '\r\n' == current[0:2]:
                 current = current[2:]
-            print(current)
             for segment in current.split('"'):
                 text += '""' + segment
             text = text[2:]
         else:
-            if 'p' == current.tag or 'br' == current.tag or 'tr' == current.tag:
+            if 'br' == current.tag:
                 text += '\n'
-            print("p" == current.tag)
-            print(current.xpath('./node()'))
             for node in current.xpath('./node()'):
                 text += self.crawl_text(node)
+            if 'p' == current.tag or 'tr' == current.tag or 'li' == current.tag:
+                if text != '':
+                    text = text + '\n'
         return text
