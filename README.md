@@ -1,3 +1,3 @@
 # ItC-python-hw-sample-code
-TA sample codes for Introduction to Computer 
+I use datetime.date() rather than datetime
  

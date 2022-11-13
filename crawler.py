@@ -52,7 +52,7 @@ class Crawler(object):
         title = ''
         for segment in text.split('"'):
             title += '""' + segment
-        return '"' + title[1:] + '"'
+        return '"' + title[2:] + '"'
 
     def crawl_content(self, rel_url):
         response = requests.get(self.base_url + rel_url)    # print(f"status: {response.status_code}")
@@ -72,7 +72,7 @@ class Crawler(object):
                 text += '\n'
             for node in current.xpath('./node()'):
                 text += self.crawl_text(node)
-            if 'p' == current.tag or 'tr' == current.tag or 'li' == current.tag:
+            if 'p' == current.tag or 'tr' == current.tag or 'li' == current.tag or 'div' == current.tag:
                 if text != '':
                     text = text + '\n'
         return text
