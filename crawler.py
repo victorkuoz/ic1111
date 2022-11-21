@@ -69,7 +69,7 @@ class Crawler(object):
             text = text[2:]
         else:
             if 'br' == current.tag:
-                text += '\n'
+                text = '\n'
             for node in current.xpath('./node()'):
                 text += self.crawl_text(node)
             if 'p' == current.tag or 'tr' == current.tag or 'li' == current.tag or 'div' == current.tag:
