@@ -1,15 +1,22 @@
 -- 10. Which planet(s) has been visited by more than three different characters?
 
+-- SELECT
+-- 	T.Planet_Name, COUNT(DISTINCT T.Character_Name) AS `Count`
+-- FROM
+-- 	TimeTable T
+-- GROUP BY
+-- 	T.Planet_Name
+
 SELECT
-	Planet
+	P.Planet_Name
 FROM
 	(SELECT
-		COUNT(DISTINCT Character_Name) AS Cnt, Planet_Name AS Planet
+		T.Planet_Name, COUNT(DISTINCT T.Character_Name) AS `Count`
 	FROM
-		TimeTable
+		TimeTable T
 	GROUP BY
-		Planet_Name) AS Tmp
+		T.Planet_Name ) AS P
 Where
-	Cnt>3
+	P.Count>3
 ORDER BY
-	Cnt;
+	P.Planet_Name;
