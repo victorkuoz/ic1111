@@ -28,7 +28,7 @@
 -- 	Tmp.Movie, Planet_Num
 
 SELECT 
-	Cur.Character_Name, Cur.Planet_Num, Cur.Movie
+	GROUP_CONCAT(Cur.Character_Name SEPARATOR ', ') AS Character_Name, Cur.Movie
 FROM
 	(
 		SELECT
@@ -76,5 +76,7 @@ WHERE
 		WHERE
 			Prev.Movie = Cur.Movie
 	)
+GROUP BY
+	Cur.Movie
 ORDER BY
 	Cur.Movie
