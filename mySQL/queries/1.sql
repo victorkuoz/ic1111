@@ -1,8 +1,8 @@
 -- 1. How many planets did Luke Skywalker visit in movie 2?
 
 SELECT DISTINCT 
-	Planet_Name
+	COUNT(T.Planet_Name) AS Planet_Number
 FROM
-	TimeTable
+	TimeTable T
 WHERE
-	Movie=2 AND Character_Name='Luke Skywalker';
+	T.Movie=2 AND T.Character_Name='Luke Skywalker';
