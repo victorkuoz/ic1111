@@ -9,8 +9,6 @@ SELECT
             TimeTable T
         WHERE
             C.Name = T.Character_Name AND C.Homeworld = T.Planet_Name
-    ) AS `Count`
+    ) AS `Times`
 FROM
     Characters C
-ORDER BY
-    C.Name
