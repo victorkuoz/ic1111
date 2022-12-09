@@ -1,82 +1,54 @@
 -- 6. For each movie, which character(s) visited the highest number of planets?
 
 -- SELECT
--- 	T.Character_Name, T.Movie
+-- 	T.Character_Name, COUNT(DISTINCT T.Planet_Name) AS Planet_Num, T.Movie
 -- FROM
--- 		TimeTable T
--- GROUP BY 
--- 	T.Character_Name, T.Planet_Name, T.Movie
+-- 	TimeTable T
+-- GROUP BY
+-- 	T.Character_Name, T.Movie
 -- ORDER BY
--- 	T.Movie, T.Character_Name
+-- 	T.Movie, T.Character_Name;
 
 -- SELECT
--- 	Tmp.Character_Name, COUNT(*) AS Planet_Num, Tmp.Movie
+-- 	MAX(Tmp.Planet_Num), Tmp.Movie
 -- FROM
--- 	(
--- 		SELECT
--- 			T.Character_Name, T.Movie
--- 		FROM
--- 				TimeTable T
--- 		GROUP BY 
--- 			T.Character_Name, T.Planet_Name, T.Movie
--- 		ORDER BY
--- 			T.Movie, T.Character_Name
--- 	) AS Tmp
+-- 	(SELECT
+-- 		T.Character_Name, COUNT(DISTINCT T.Planet_Name) AS Planet_Num, T.Movie
+-- 	FROM
+-- 		TimeTable T
+-- 	GROUP BY
+-- 		T.Character_Name, T.Movie
+-- 	ORDER BY
+-- 		T.Movie, T.Character_Name) AS Tmp
 -- GROUP BY
--- 	Tmp.Character_Name, Tmp.Movie
--- ORDER BY
--- 	Tmp.Movie, Planet_Num
+-- 	Tmp.Movie;
 
-SELECT 
-	GROUP_CONCAT(Cur.Character_Name SEPARATOR ', ') AS Character_Name, Cur.Movie
+SELECT
+	GROUP_CONCAT(K.Character_Name SEPARATOR ', ') AS Character_Names, K.Movie
 FROM
-	(
-		SELECT
-			Tmp.Character_Name, COUNT(*) AS Planet_Num, Tmp.Movie
-		FROM
-			(
-				SELECT
-					T.Character_Name, T.Movie
-				FROM
-						TimeTable T
-				GROUP BY 
-					T.Character_Name, T.Planet_Name, T.Movie
-				ORDER BY
-					T.Movie, T.Character_Name
-			) AS Tmp
-		GROUP BY
-			Tmp.Character_Name, Tmp.Movie
-		ORDER BY
-			Tmp.Movie, Planet_Num
-	) AS Cur
+	(SELECT
+		T.Character_Name, COUNT(DISTINCT T.Planet_Name) AS Planet_Num, T.Movie
+	FROM
+		TimeTable T
+	GROUP BY
+		T.Character_Name, T.Movie
+	ORDER BY
+		T.Movie, T.Character_Name) AS K
 WHERE
-	Cur.Planet_Num = (
-		SELECT
-			MAX(Prev.Planet_Num)
+	K.Planet_Num = (
+	SELECT
+		MAX(Tmp.Planet_Num)
+	FROM
+		(SELECT
+			T.Character_Name, COUNT(DISTINCT T.Planet_Name) AS Planet_Num, T.Movie
 		FROM
-			(
-				SELECT
-					Tmp.Character_Name, COUNT(*) AS Planet_Num, Tmp.Movie
-				FROM
-					(
-						SELECT
-							T.Character_Name, T.Movie
-						FROM
-								TimeTable T
-						GROUP BY 
-							T.Character_Name, T.Planet_Name, T.Movie
-						ORDER BY
-							T.Movie, T.Character_Name
-					) AS Tmp
-				GROUP BY
-					Tmp.Character_Name, Tmp.Movie
-				ORDER BY
-					Tmp.Movie, Planet_Num
-			) AS Prev
-		WHERE
-			Prev.Movie = Cur.Movie
+			TimeTable T
+		GROUP BY
+			T.Character_Name, T.Movie
+		ORDER BY
+			T.Movie, T.Character_Name) AS Tmp
+	WHERE
+		Tmp.Movie = K.Movie
 	)
 GROUP BY
-	Cur.Movie
-ORDER BY
-	Cur.Movie
+	K.Movie;
