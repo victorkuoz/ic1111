@@ -1,22 +1,22 @@
 -- 2. Find all characters that never visited any empire planets.
 
 SELECT
-	Name
+	C.Name
 FROM
-	Characters
+	Characters C
 WHERE
-	Name NOT IN (
+	C.Name NOT IN (
 		SELECT DISTINCT
-			Character_Name
+			T.Character_Name
 		FROM
-			TimeTable
+			TimeTable T
 		WHERE
-			Planet_Name IN (
+			T.Planet_Name IN (
 			SELECT
-				Name
+				P.Name
 			FROM
-				Planets
+				Planets P
 			WHERE
-				Affiliation='empire'
+				P.Affiliation='empire'
 		)
 	);
