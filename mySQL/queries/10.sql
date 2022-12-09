@@ -17,6 +17,4 @@ FROM
 	GROUP BY
 		T.Planet_Name ) AS P
 Where
-	P.Count>3
-ORDER BY
-	P.Planet_Name;
+	P.Count>3;

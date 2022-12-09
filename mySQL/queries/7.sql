@@ -11,4 +11,4 @@ SELECT
             C.Name = T.Character_Name AND C.Homeworld = T.Planet_Name
     ) AS `Times`
 FROM
-    Characters C
+    Characters C;

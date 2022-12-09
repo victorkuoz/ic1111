@@ -50,4 +50,4 @@ WHERE
 			T_.Movie
 	)
 ORDER BY
-	T.Movie, C.Race, C.Name
+	T.Movie, C.Race, C.Name;
