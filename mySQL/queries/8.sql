@@ -2,7 +2,7 @@
     -- what is the planet that has the different affiliation with him and that he travels to for the longest length of time? (movie, planet)
 
 SELECT
-    GROUP_CONCAT(Cur.Planet_Name SEPARATOR ', ') AS Planet_Names, Cur.Movie
+    Cur.Movie, GROUP_CONCAT(Cur.Planet_Name SEPARATOR ', ') AS Planet_Names
 FROM
     (
         SELECT
@@ -44,4 +44,4 @@ WHERE
             Cur.Movie = Prev.Movie
     )
 GROUP BY
-    Cur.Movie
+    Cur.Movie;

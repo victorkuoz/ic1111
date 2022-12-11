@@ -23,7 +23,7 @@
 
 
 SELECT
-	T.Movie, C.Race, C.Name
+	T.Movie, C.Race, C.Name AS `Character_Name`
 FROM
 	Characters C, 
 	(SELECT
