@@ -24,7 +24,7 @@
 -- 	Tmp.Movie;
 
 SELECT
-	GROUP_CONCAT(K.Character_Name SEPARATOR ', ') AS Character_Names, K.Movie
+	K.Character_Name, K.Movie
 FROM
 	(SELECT
 		T.Character_Name, COUNT(DISTINCT T.Planet_Name) AS Planet_Num, T.Movie
@@ -49,6 +49,4 @@ WHERE
 			T.Movie, T.Character_Name) AS Tmp
 	WHERE
 		Tmp.Movie = K.Movie
-	)
-GROUP BY
-	K.Movie;
+	);
